@@ -1,40 +1,41 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Alumnos Nuevo Ingreso</title>
+<title>INSTITUTO TECNOLOGICO DE QUERETARO</title>
 <style>
 table, th, td {
   border: 1px solid black;
   border-collapse: collapse;
 }
-th{ background-color: #404040; padding: 4px; }
-td{ background-color: #bebebe; padding: 4px; }
+table{width: 100%;}
+th{ background-color: #404040; padding: 4px; text-align:center; font-family: Verdana;}
+td{ background-color: #bebebe; padding: 4px; text-align:center; font-family: Times;}
+h2{text-align: center;}
+h3{text-align: center;}
+img{width:100px;height:100px; align:center;}
 </style>
-
 <!-- CSS file Included  
 <link rel="stylesheet"
         type="text/css" href="tec_estilo.css">--> 
 </head>
 
-<h2 style="color:#200000";>Alumnos Nuevo Ingreso</h2>
 <body>
-<div style="text-align:left;"><img src="descarga.jpg" alt="itq Icon" style="width:100px;height:1px;"></div>
-<!--Agregar botón para exportar -->
-<div class="container">
- <div class="well-sm col-sm-12"> 
- <div class="btn-group pull-right">  
- <form action=" <?php echo $_SERVER["PHP_SELF"]; ?>" method="post">
- <button type ="submit" id="export_data" name='export_data'
-  value= "Export to excel" class="btn btn-info">Exportar a Excel
-</button>   
-<input type="hidden" id="carrera" name="carrera" value = "<?php echo $_POST["carrera"] ?>">
+<div><img src="descarga.jpg" alt="itq Icon"></div>
+<h2>INSTITUTO TECNOLOGICO DE QUERETARO</h2>
+<h3>ALUMNOS NUEVO INGRESO</h3>
 
- </form>
- </div>
- </div>  
- </div>  
-
- <?php
+  <!--Agregar botón para exportar -->
+  <div class="container">
+    <div class="well-sm col-sm-12"> 
+      <div class="btn-group pull-right">  
+<form action="<?php echo $_SERVER["PHP_SELF"];?>" method="post">
+        <button type ="submit" id="export_data" name='export_data' value= "Export to excel" class="btn btn-info">Exportar a Excel</button>  
+<input type="hidden" id="carrera" name="carrera" value = "<?php echo $_POST["carrera"]?>">
+        </form>
+     </div>
+    </div>  
+  </div>
+<?php
   /*if($_POST)
   {
     $carrera = $_POST ["carrera"];
@@ -61,16 +62,14 @@ if ($conn->connect_error) {
 $sql = "SELECT No_de_Control, Apellido_Paterno, Apellido_Materno, Nombre
           FROM alumnosni20223
          WHERE carrera = '$carrera'";
-
-
-         
+      
 $result = $conn->query($sql);
 
 //echo $result;
 if ($result -> num_rows > 0) {
   // output data of each row
-  echo "<table>
 
+  echo "<table>       
              <caption>ALUMNOS</caption>
               <tr>
                 <th>#</th>
@@ -92,24 +91,24 @@ $i=0;
   */
    $id = (($i % 2) ==0)? "par": "non";
    echo "<tr id = $id><td>".++$i."</td>
-                      <td>".$row["No_de_Control"]."</td>
+                      <td>".$row["No_de_Control"]. "</td>
                       <td>".$row["Apellido_Paterno"]. "</td>
                       <td>".$row["Apellido_Materno"]. "</td>
-                      <td>".$row["Nombre"]."</td>
-        </tr>";
-  }
- 
-  echo "</table>";
-} else {
-  echo "0 results";
+                      <td>".$row["Nombre"]."</td> </tr>";
+}
+echo "</table>";
+} else { 
+echo "0 results"; 
 }
 
 // Mostrar tabla en Excell
 if(isset($_POST["export_data"])) {
-  if(!empty($result)) {
-  $filename = "carreras.xls";
-  header("Content-Type: application/vnd.ms-excel");
-  header("Content-Disposition: attachment; filename=".$filename);
+if(!empty($result)){
+$filename = "carreras.xls";
+
+header("Content-Type: application/vnd.ms-excel; charset=UTF-8");
+header("Content-Disposition: attachment; filename=".$filename);
+
   $mostrar_columnas = false;
  
   while($row = $result->fetch_assoc()){
@@ -119,7 +118,6 @@ if(isset($_POST["export_data"])) {
   }
   echo implode ("\t", array_values($result)) . "\n";
   }
- 
   }else{
   echo 'No hay datos a exportar';
   }
@@ -136,6 +134,6 @@ else{
   echo "Query failed: ".$error_message;
 }
 $conn->close();
-?>  
+?>
 </body>
 </html>
